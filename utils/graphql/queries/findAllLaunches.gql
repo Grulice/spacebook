@@ -1,0 +1,15 @@
+query findAllLaunches {
+  launches(sort: "launch_date_utc", order: "desc") {
+    rocket {
+      rocket_name
+    }
+    id
+    launch_date_utc
+    details
+    mission_name
+    launch_success
+    launch_site {
+      site_name
+    }
+  }
+}

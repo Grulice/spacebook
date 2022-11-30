@@ -1,0 +1,18 @@
+overwrite: true
+schema: ${NEXT_PUBLIC_GRAPHQL_URL}
+documents:
+  - "utils/graphql/queries/**/*.gql"
+generates:
+  utils/graphql/generated/client.ts:
+    config:
+      rawRequest: false
+      autogenSWRKey: true
+      scalars:
+        # Could be number for unix timestamps
+        Date: "string"
+    plugins:
+      - typescript
+      - typescript-operations
+      # Put `plugin-typescript-swr` below `typescript-graphql-request`
+      - typescript-graphql-request
+      - plugin-typescript-swr

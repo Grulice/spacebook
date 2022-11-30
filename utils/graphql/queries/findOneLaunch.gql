@@ -1,0 +1,22 @@
+query findOneLaunch($launchId: ID!) {
+  launch(id: $launchId) {
+    id
+    is_tentative
+    launch_date_utc
+    details
+    launch_site {
+      site_name_long
+    }
+    launch_success
+    links {
+      wikipedia
+      video_link
+      article_link
+      flickr_images
+    }
+    mission_name
+    rocket {
+      rocket_name
+    }
+  }
+}
