@@ -989,10 +989,13 @@ export type Volume = {
   cubic_meters?: Maybe<Scalars['Int']>;
 };
 
-export type FindAllLaunchesQueryVariables = Exact<{ [key: string]: never; }>;
+export type FindAllPastLaunchesQueryVariables = Exact<{
+  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+}>;
 
 
-export type FindAllLaunchesQuery = { __typename?: 'Query', launches?: Array<{ __typename?: 'Launch', id?: string | null, launch_date_utc?: string | null, details?: string | null, mission_name?: string | null, launch_success?: boolean | null, rocket?: { __typename?: 'LaunchRocket', rocket_name?: string | null } | null, launch_site?: { __typename?: 'LaunchSite', site_name?: string | null } | null } | null> | null };
+export type FindAllPastLaunchesQuery = { __typename?: 'Query', launchesPastResult?: { __typename?: 'LaunchesPastResult', result?: { __typename?: 'Result', totalCount?: number | null } | null, data?: Array<{ __typename?: 'Launch', id?: string | null, launch_date_utc?: string | null, details?: string | null, mission_name?: string | null, launch_success?: boolean | null, rocket?: { __typename?: 'LaunchRocket', rocket_name?: string | null } | null, launch_site?: { __typename?: 'LaunchSite', site_name?: string | null } | null } | null> | null } | null };
 
 export type FindOneLaunchQueryVariables = Exact<{
   launchId: Scalars['ID'];
@@ -1002,19 +1005,29 @@ export type FindOneLaunchQueryVariables = Exact<{
 export type FindOneLaunchQuery = { __typename?: 'Query', launch?: { __typename?: 'Launch', id?: string | null, is_tentative?: boolean | null, launch_date_utc?: string | null, details?: string | null, launch_success?: boolean | null, mission_name?: string | null, launch_site?: { __typename?: 'LaunchSite', site_name_long?: string | null } | null, links?: { __typename?: 'LaunchLinks', wikipedia?: string | null, video_link?: string | null, article_link?: string | null, flickr_images?: Array<string | null> | null } | null, rocket?: { __typename?: 'LaunchRocket', rocket_name?: string | null } | null } | null };
 
 
-export const FindAllLaunchesDocument = gql`
-    query findAllLaunches {
-  launches(sort: "launch_date_utc", order: "desc") {
-    rocket {
-      rocket_name
+export const FindAllPastLaunchesDocument = gql`
+    query findAllPastLaunches($offset: Int, $limit: Int) {
+  launchesPastResult(
+    sort: "launch_date_utc"
+    order: "desc"
+    offset: $offset
+    limit: $limit
+  ) {
+    result {
+      totalCount
     }
-    id
-    launch_date_utc
-    details
-    mission_name
-    launch_success
-    launch_site {
-      site_name
+    data {
+      rocket {
+        rocket_name
+      }
+      id
+      launch_date_utc
+      details
+      mission_name
+      launch_success
+      launch_site {
+        site_name
+      }
     }
   }
 }
@@ -1051,8 +1064,8 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    findAllLaunches(variables?: FindAllLaunchesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FindAllLaunchesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<FindAllLaunchesQuery>(FindAllLaunchesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'findAllLaunches', 'query');
+    findAllPastLaunches(variables?: FindAllPastLaunchesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FindAllPastLaunchesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<FindAllPastLaunchesQuery>(FindAllPastLaunchesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'findAllPastLaunches', 'query');
     },
     findOneLaunch(variables: FindOneLaunchQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FindOneLaunchQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<FindOneLaunchQuery>(FindOneLaunchDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'findOneLaunch', 'query');
@@ -1065,8 +1078,8 @@ export function getSdkWithHooks(client: GraphQLClient, withWrapper: SdkFunctionW
   const genKey = <V extends Record<string, unknown> = Record<string, unknown>>(name: string, object: V = {} as V): SWRKeyInterface => [name, ...Object.keys(object).sort().map(key => object[key])];
   return {
     ...sdk,
-    useFindAllLaunches(variables?: FindAllLaunchesQueryVariables, config?: SWRConfigInterface<FindAllLaunchesQuery, ClientError>) {
-      return useSWR<FindAllLaunchesQuery, ClientError>(genKey<FindAllLaunchesQueryVariables>('FindAllLaunches', variables), () => sdk.findAllLaunches(variables), config);
+    useFindAllPastLaunches(variables?: FindAllPastLaunchesQueryVariables, config?: SWRConfigInterface<FindAllPastLaunchesQuery, ClientError>) {
+      return useSWR<FindAllPastLaunchesQuery, ClientError>(genKey<FindAllPastLaunchesQueryVariables>('FindAllPastLaunches', variables), () => sdk.findAllPastLaunches(variables), config);
     },
     useFindOneLaunch(variables: FindOneLaunchQueryVariables, config?: SWRConfigInterface<FindOneLaunchQuery, ClientError>) {
       return useSWR<FindOneLaunchQuery, ClientError>(genKey<FindOneLaunchQueryVariables>('FindOneLaunch', variables), () => sdk.findOneLaunch(variables), config);

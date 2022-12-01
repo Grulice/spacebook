@@ -1,0 +1,2 @@
+export const DEFAULT_SIBLING_COUNT = 2;
+export const DEFAULT_BOUNDARY_COUNT = 1;
