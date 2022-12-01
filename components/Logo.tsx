@@ -1,13 +1,17 @@
 import React from "react";
 
 interface IProps {
+
+  /** Width/height in `px` */
   size?: number;
+
+  className?: string;
 }
 
-export const Logo: React.FC<IProps> = ({ size = 48 }) => {
+export const Logo: React.FC<IProps> = ({ size = 48, className }) => {
   return (
     <svg
-      className='dark:text-white'
+      className={`dark:text-white ${className}`}
       version='1.1'
       id='Layer_1'
       xmlns='http://www.w3.org/2000/svg'
