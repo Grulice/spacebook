@@ -1,15 +1,25 @@
-query findAllLaunches {
-  launches(sort: "launch_date_utc", order: "desc") {
-    rocket {
-      rocket_name
+query findAllPastLaunches($offset: Int, $limit: Int) {
+  launchesPastResult(
+    sort: "launch_date_utc"
+    order: "desc"
+    offset: $offset
+    limit: $limit
+  ) {
+    result {
+      totalCount
     }
-    id
-    launch_date_utc
-    details
-    mission_name
-    launch_success
-    launch_site {
-      site_name
+    data {
+      rocket {
+        rocket_name
+      }
+      id
+      launch_date_utc
+      details
+      mission_name
+      launch_success
+      launch_site {
+        site_name
+      }
     }
   }
 }
