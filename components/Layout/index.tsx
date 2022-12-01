@@ -8,7 +8,7 @@ interface IProps {
 
 export const Layout: React.FC<IProps> = ({ children }) => {
   return (
-    <div className='flex flex-col h-full'>
+    <div className='flex flex-col min-h-[100vh]'>
       <LayoutHeader />
       <main className='px-2 md:px-4 lg:px-10 xl:px-20 pt-5 flex-grow'>{children}</main>
       <LayoutFooter />
