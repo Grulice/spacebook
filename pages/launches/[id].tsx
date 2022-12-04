@@ -49,7 +49,7 @@ const LaunchDetails: NextPage<IProps> = ({ details }) => {
     }
     if (imageUrl) {
       return (
-        <div className='relative min-h-[500px] -z-10'>
+        <div className='relative mt-4 lg:mt-0 min-h-[500px] -z-10 bg-gray-100'>
           <Image className='object-cover' src={imageUrl} alt='' fill />
         </div>
       );
@@ -86,36 +86,26 @@ const LaunchDetails: NextPage<IProps> = ({ details }) => {
         </Link>
         <PageHeading title={mission_name || ""} />
         <div className='mt-4 grid grid-cols-1 lg:grid-cols-2'>
-          <div className='mr-0 lg:mr-20'>
-            <div>
-              <h4 className='text-xl font-bold mb-2'>Details</h4>
-              {missionDetails ? (
-                <p>{missionDetails}</p>
-              ) : (
-                <p className='text-gray-400'>No description</p>
-              )}
+          <article className='prose dark:prose-invert mr-0 lg:mr-20'>
+            <h4>Details</h4>
+            <p>{missionDetails ?? "No description"}</p>
+            <h4>Stats</h4>
+            <div className='grid grid-cols-[minmax(min-content,_120px)_minmax(0,_1fr)] gap-y-2 items-center'>
+              <InfoRow
+                label='Launch date'
+                content={dayjs(launch_date_utc).format("YYYY-MM-DD, HH:mm:ss")}
+              />
+              <InfoRow label='Rocket name' content={rocket?.rocket_name} />
+              <InfoRow
+                label='Launch site'
+                content={launch_site?.site_name_long}
+              />
+              <InfoRow
+                label='Launch successful'
+                content={launch_success ? "Yes" : "No"}
+              />
             </div>
-            <div className='mt-4'>
-              <h4 className='text-xl font-bold mb-2'>Stats</h4>
-              <div className='grid grid-cols-[minmax(min-content,_120px)_minmax(0,_1fr)] gap-y-2 items-center'>
-                <InfoRow
-                  label='Launch date'
-                  content={dayjs(launch_date_utc).format(
-                    "YYYY-MM-DD, HH:mm:ss"
-                  )}
-                />
-                <InfoRow label='Rocket name' content={rocket?.rocket_name} />
-                <InfoRow
-                  label='Launch site'
-                  content={launch_site?.site_name_long}
-                />
-                <InfoRow
-                  label='Launch successful'
-                  content={launch_success ? "Yes" : "No"}
-                />
-              </div>
-            </div>
-          </div>
+          </article>
           <div className='relative'>
             {renderVideoOrImage({
               videoId,
