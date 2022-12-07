@@ -11,9 +11,9 @@ interface IProps {
 
 export const LaunchCard: React.FC<IProps> = ({ launchInfo }) => {
   return (
-    <article className='rounded-lg border hover:transition-[border] hover:border-gray-400 p-6 min-w-[6rem] max-h-96'>
+    <article className='flex flex-col rounded-lg border hover:transition-[border] hover:border-gray-400 p-6 min-w-[6rem] max-h-96'>
       <h4 className='font-bold mb-2'>{launchInfo?.mission_name}</h4>
-      <div className='grid grid-cols-[minmax(min-content,_120px)_minmax(0,_1fr)] gap-y-2 items-center'>
+      <div className='grid grid-cols-[minmax(min-content,_120px)_minmax(0,_1fr)] gap-y-2 items-center mb-6'>
         <InfoRow
           label='Launch date'
           content={dayjs(launchInfo?.launch_date_utc).format(
@@ -32,14 +32,14 @@ export const LaunchCard: React.FC<IProps> = ({ launchInfo }) => {
         <InfoRow
           label='Details'
           content={
-            <div className='overflow-hidden whitespace-nowrap overflow-ellipsis'>
+            <div className='line-clamp-3 overflow-hidden overflow-ellipsis'>
               {launchInfo?.details ?? "—"}
             </div>
           }
         />
       </div>
       <Link
-        className='block mt-6 text-blue-500 hover:underline'
+        className='block mt-auto text-blue-500 hover:underline'
         href={ROUTES.LAUNCH_DETAILS.compileUrl?.({ id: launchInfo.id! }) || ""}
       >
         More info →
