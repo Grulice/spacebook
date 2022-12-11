@@ -51,10 +51,9 @@ const ContactUsPage: NextPage = () => {
         <div className="content">
           <h2 className="font-medium text-2xl">Follow us on social and be part of the conversation</h2>
           <div className="flex justify-center gap-6 mt-8">
-            <SocialIcon url="#" network="telegram" />
-            <SocialIcon url="#" network="twitter" />
-            <SocialIcon url="#" network="instagram" />
-            <SocialIcon url="#" network="facebook" />
+            {["telegram", "twitter", "instagram", "facebook"].map((src)=>
+              <SocialIcon url="#" network={src}/>
+            )}
           </div>
         </div>
       </div>
