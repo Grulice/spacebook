@@ -41,8 +41,7 @@ const ContactUsPage: NextPage = () => {
                       src={src}
                       alt=""
                       placeholder="blur"
-                      className="h-full w-full object-cover rounded-full aspect-square"
-                  ></Image>
+                      className="h-full w-full object-cover rounded-full aspect-square"/>
                 </div>
               )}
             </div>
