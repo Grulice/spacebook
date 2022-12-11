@@ -35,8 +35,8 @@ const ContactUsPage: NextPage = () => {
           <div className="divide-y">
             <div className="font-thin text-sm py-6">Live Support is available Mon-Fri 5am-7pm ET / 10am-Midnight GMT</div>
             <div className="flex gap-6 py-6">
-              {[JavidImg, PhilImg, KamranImg].map((src)=>
-                <div className="h-40 w-auto">
+              {[JavidImg, PhilImg, KamranImg].map((src,index)=>
+                <div key={index} className="h-40 w-auto">
                     <Image 
                       src={src}
                       alt=""
@@ -50,8 +50,8 @@ const ContactUsPage: NextPage = () => {
         <div className="content">
           <h2 className="font-medium text-2xl">Follow us on social and be part of the conversation</h2>
           <div className="flex justify-center gap-6 mt-8">
-            {["telegram", "twitter", "instagram", "facebook"].map((src)=>
-              <SocialIcon url="#" network={src}/>
+            {["telegram", "twitter", "instagram", "facebook"].map((network, index)=>
+              <SocialIcon key={index} url="#" network={network}/>
             )}
           </div>
         </div>
