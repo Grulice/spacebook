@@ -26,7 +26,7 @@ const ContactUsPage: NextPage = () => {
             <span className="text-gray-700">Your message</span>
             <textarea className="mt-1 block w-full"></textarea>
           </label>
-          <button className="thd-button-secondary bg-[#1da1f2] text-white text-xl font-medium p-2 rounded">Send</button>
+          <button className="bg-[#1da1f2] text-white text-xl font-medium p-2 rounded">Send</button>
         </div>
       </div>
       <div className="max-w-xl mt-8 md:mt-0">
