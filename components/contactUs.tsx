@@ -11,7 +11,7 @@ export const ContactFrom = () => {
   const [nameErr, setNameErr] = useState("");
   const [emailErr, setEmailErr] = useState("");
   const [messageErr, setMessageErr] = useState("");
-  const [state, setstate] = useState<FormState>({
+  const [formState, setstate] = useState<FormState>({
     name: "",
     email: "",
     message: "",
@@ -42,14 +42,14 @@ export const ContactFrom = () => {
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLTextAreaElement>
   ) => {
-    setstate({ ...state, [event.target.name]: event.target.value });
+    setstate({ ...formState, [event.target.name]: event.target.value });
   };
 
   const formIsValid = () => {
     let validRegex =
       /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-    if (state.name.length === 0) {
+    if (formState.name.length === 0) {
       setNameErr("This field is required");
       setFocus(nameInput);
       return 0;
@@ -57,7 +57,7 @@ export const ContactFrom = () => {
       setNameErr("");
     }
 
-    if (state.email.match(validRegex) === null) {
+    if (formState.email.match(validRegex) === null) {
       setEmailErr("Input valid email");
       setFocus(emailInput);
       return 0;
@@ -65,7 +65,7 @@ export const ContactFrom = () => {
       setEmailErr("");
     }
 
-    if (state.message.length === 0) {
+    if (formState.message.length === 0) {
       setMessageErr("This field is required");
       setFocus(messageInput);
       return 0;
@@ -78,7 +78,7 @@ export const ContactFrom = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    formIsValid() ? console.log(state) : console.log("Form is invalid");
+    formIsValid() ? console.log(formState) : console.log("Form is invalid");
   };
 
   return (
@@ -90,7 +90,7 @@ export const ContactFrom = () => {
         <input
           id="input-name"
           name="name"
-          value={state.name}
+          value={formState.name}
           onChange={handleChange}
           type="text"
           className="mt-1 block w-full"
@@ -105,7 +105,7 @@ export const ContactFrom = () => {
         </span>
         <input
           id="input-email"
-          value={state.email}
+          value={formState.email}
           onChange={handleChange}
           type="text"
           name="email"
@@ -123,7 +123,7 @@ export const ContactFrom = () => {
         <textarea
           id="input-messagae"
           name="message"
-          value={state.message}
+          value={formState.message}
           onChange={handleChange}
           className="mt-1 block w-full"
           ref={messageInput}
