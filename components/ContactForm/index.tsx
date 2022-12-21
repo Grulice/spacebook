@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { RenderMsg } from "./renderMsg";
+import { isEmailValid, isMessageValid, isNameValid } from "./validations";
+import styles from "./Styles.module.css";
 
 type FormState = {
   name: string;
@@ -7,10 +9,10 @@ type FormState = {
   message: string;
 };
 
-export const ContactFrom = () => {
-  const [nameErr, setNameErr] = useState("");
-  const [emailErr, setEmailErr] = useState("");
-  const [messageErr, setMessageErr] = useState("");
+export const ContactForm = () => {
+  const [nameErr, setNameErr] = useState<string | null>(null);
+  const [emailErr, setEmailErr] = useState<string | null>(null);
+  const [messageErr, setMessageErr] = useState<string | null>(null);
   const [formState, setstate] = useState<FormState>({
     name: "",
     email: "",
@@ -27,15 +29,14 @@ export const ContactFrom = () => {
     }
   }, []);
 
-  const setFocus = (
-    ref:
-      | React.RefObject<HTMLInputElement>
-      | React.RefObject<HTMLTextAreaElement>
-  ) => {
-    if (ref.current != null) {
-      ref.current.focus();
+  useEffect(() => {
+    const inputToFocus = document.querySelector(
+      "." + styles.error
+    ) as HTMLElement;
+    if (inputToFocus !== null) {
+      inputToFocus.focus();
     }
-  };
+  }, [nameErr, emailErr, messageErr]);
 
   const handleChange = (
     event:
@@ -46,34 +47,20 @@ export const ContactFrom = () => {
   };
 
   const formIsValid = () => {
-    let validRegex =
-      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    const nameValid = isNameValid(formState.name);
+    const messageValid = isMessageValid(formState.message);
+    const emailValid = isEmailValid(formState.email);
+    setNameErr(nameValid);
+    setMessageErr(messageValid);
+    setEmailErr(emailValid);
 
-    if (formState.name.length === 0) {
-      setNameErr("This field is required");
-      setFocus(nameInput);
-      return 0;
-    } else {
-      setNameErr("");
-    }
+    const errArray = [nameValid, messageValid, emailValid];
+    let isValid = true;
+    errArray.forEach((error) => {
+      if (error !== null) isValid = false;
+    });
 
-    if (formState.email.match(validRegex) === null) {
-      setEmailErr("Input valid email");
-      setFocus(emailInput);
-      return 0;
-    } else {
-      setEmailErr("");
-    }
-
-    if (formState.message.length === 0) {
-      setMessageErr("This field is required");
-      setFocus(messageInput);
-      return 0;
-    } else {
-      setMessageErr("");
-    }
-
-    return 1;
+    return isValid;
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -93,7 +80,7 @@ export const ContactFrom = () => {
           value={formState.name}
           onChange={handleChange}
           type="text"
-          className="mt-1 block w-full"
+          className={`mt-1 block w-full ${nameErr ? styles.error : null}`}
           ref={nameInput}
         />
         <RenderMsg message={nameErr} />
@@ -109,7 +96,7 @@ export const ContactFrom = () => {
           onChange={handleChange}
           type="text"
           name="email"
-          className="mt-1 block w-full"
+          className={`mt-1 block w-full ${emailErr ? styles.error : null}`}
           placeholder="john@example.com"
           ref={emailInput}
         />
@@ -125,7 +112,7 @@ export const ContactFrom = () => {
           name="message"
           value={formState.message}
           onChange={handleChange}
-          className="mt-1 block w-full"
+          className={`mt-1 block w-full ${messageErr ? styles.error : null}`}
           ref={messageInput}
         ></textarea>
         <RenderMsg message={messageErr} />

@@ -1,7 +1,7 @@
 import React from "react";
 
 interface IProps {
-  message: string;
+  message: string | null;
 }
 
 export const RenderMsg: React.FC<IProps> = ({ message }) => {

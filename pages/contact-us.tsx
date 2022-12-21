@@ -4,7 +4,7 @@ import Image from "next/image";
 import JavidImg from "../public/images/javid.jpg";
 import KamranImg from "../public/images/kamran.jpg";
 import PhilImg from "../public/images/phil.jpg";
-import { ContactFrom } from "../components/contactUs";
+import { ContactForm } from "../components/ContactForm";
 
 const ContactUsPage: NextPage = () => {
   return (
@@ -15,7 +15,7 @@ const ContactUsPage: NextPage = () => {
       </h1>
       <div className="content flex md:flex-row flex-col gap-x-6 mt-12">
         <div className="max-w-xl">
-          <ContactFrom />
+          <ContactForm />
         </div>
         <div className="max-w-xl mt-8 md:mt-0">
           <div className="flex flex-col justify-center">
