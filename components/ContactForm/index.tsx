@@ -55,9 +55,8 @@ export const ContactForm = () => {
     setEmailErr(emailValid);
 
     const errArray = [nameValid, messageValid, emailValid];
-    let isValid = true;
-    errArray.forEach((error) => {
-      if (error !== null) isValid = false;
+    const isValid = errArray.every((error) => {
+      error === null;
     });
 
     return isValid;
