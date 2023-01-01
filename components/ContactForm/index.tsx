@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { RenderMsg } from "./renderMsg";
 import { isEmailValid, isMessageValid, isNameValid } from "./validations";
 import styles from "./Styles.module.css";
+import { UniqueInputFieldNamesRule } from "graphql";
 
 type FormState = {
   name: string;
@@ -29,14 +30,18 @@ export const ContactForm = () => {
     }
   }, []);
 
-  useEffect(() => {
-    const inputToFocus = document.querySelector(
-      "." + styles.error
-    ) as HTMLElement;
-    if (inputToFocus !== null) {
-      inputToFocus.focus();
-    }
-  }, [nameErr, emailErr, messageErr]);
+  const setFocus = ([nameValid, emailValid, messageValid]: Array<
+    string | null
+  >) => {
+    //it looks ugly to me but i couldn't come up with anything working other than this :(
+    nameValid !== null
+      ? nameInput.current?.focus()
+      : emailValid !== null
+      ? emailInput.current?.focus()
+      : messageValid !== null
+      ? messageInput.current?.focus()
+      : null;
+  };
 
   const handleChange = (
     event:
@@ -50,12 +55,14 @@ export const ContactForm = () => {
     const nameValid = isNameValid(formState.name);
     const messageValid = isMessageValid(formState.message);
     const emailValid = isEmailValid(formState.email);
+
     setNameErr(nameValid);
     setMessageErr(messageValid);
     setEmailErr(emailValid);
 
-    const errArray = [nameValid, messageValid, emailValid];
+    const errArray = [nameValid, emailValid, messageValid];
     const isValid = errArray.every((error) => error === null);
+    setFocus(errArray);
 
     return isValid;
   };
