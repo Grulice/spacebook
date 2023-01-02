@@ -35,4 +35,9 @@ a {
     color: white;
     background: black;
   }
+
+  input[type="text"],
+  textarea {
+    background-color: black;
+  }
 }
