@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { RenderMsg } from "./renderMsg";
 import { isEmailValid, isMessageValid, isNameValid } from "./validations";
 import styles from "./Styles.module.css";
-import { UniqueInputFieldNamesRule } from "graphql";
 
 type FormState = {
   name: string;
@@ -67,13 +66,47 @@ export const ContactForm = () => {
     return isValid;
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    formIsValid() ? console.log(formState) : console.log("Form is invalid");
+
+    if (formIsValid()) {
+      const target = e.target as typeof e.target & {
+        name: { value: string };
+        email: { value: string };
+        message: { value: string };
+      };
+
+      const data = {
+        name: target.name.value,
+        email: target.email.value,
+        message: target.message.value,
+      };
+
+      const JSONdata = JSON.stringify(data);
+      const endpoint = "/api/contact-us";
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSONdata,
+      };
+
+      const response = await fetch(endpoint, options);
+      const result = await response.json();
+      alert(result.message);
+    } else {
+      console.log("Form is invalid!");
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-8" action="">
+    <form
+      method="POST"
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-8"
+      action="/api/contact-us"
+    >
       <label htmlFor="input-name" className="block">
         <span className="text-gray-700">
           Full name<span className="text-red-500">*</span>
