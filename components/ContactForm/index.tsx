@@ -101,12 +101,7 @@ export const ContactForm = () => {
   };
 
   return (
-    <form
-      method="POST"
-      onSubmit={handleSubmit}
-      className="flex flex-col gap-8"
-      action="/api/contact-us"
-    >
+    <form onSubmit={handleSubmit} className="flex flex-col gap-8">
       <label htmlFor="input-name" className="block">
         <span className="text-gray-700">
           Full name<span className="text-red-500">*</span>
