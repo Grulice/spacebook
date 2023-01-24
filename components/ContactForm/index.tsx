@@ -2,18 +2,14 @@ import React, { useState, useRef, useEffect } from "react";
 import { RenderMsg } from "./renderMsg";
 import { isEmailValid, isMessageValid, isNameValid } from "./validations";
 import styles from "./Styles.module.css";
-
-type FormState = {
-  name: string;
-  email: string;
-  message: string;
-};
+import { TFormData } from "./types";
+import { sendContactDetails } from "./requests";
 
 export const ContactForm = () => {
   const [nameErr, setNameErr] = useState<string | null>(null);
   const [emailErr, setEmailErr] = useState<string | null>(null);
   const [messageErr, setMessageErr] = useState<string | null>(null);
-  const [formState, setstate] = useState<FormState>({
+  const [formState, setstate] = useState<TFormData>({
     name: "",
     email: "",
     message: "",
@@ -70,31 +66,9 @@ export const ContactForm = () => {
     e.preventDefault();
 
     if (formIsValid()) {
-      const target = e.target as typeof e.target & {
-        name: { value: string };
-        email: { value: string };
-        message: { value: string };
-      };
-
-      const data = {
-        name: target.name.value,
-        email: target.email.value,
-        message: target.message.value,
-      };
-
-      const JSONdata = JSON.stringify(data);
-      const endpoint = "/api/contact-us";
-      const options = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSONdata,
-      };
-
-      const response = await fetch(endpoint, options);
-      const result = await response.json();
-      alert(result.message);
+      sendContactDetails(formState).then((value) => {
+        alert(value.message);
+      });
     } else {
       console.log("Form is invalid!");
     }
