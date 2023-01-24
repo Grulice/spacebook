@@ -2,19 +2,14 @@ import React, { useState, useRef, useEffect } from "react";
 import { RenderMsg } from "./renderMsg";
 import { isEmailValid, isMessageValid, isNameValid } from "./validations";
 import styles from "./Styles.module.css";
-import { UniqueInputFieldNamesRule } from "graphql";
-
-type FormState = {
-  name: string;
-  email: string;
-  message: string;
-};
+import { TFormData } from "./types";
+import { sendContactDetails } from "./requests";
 
 export const ContactForm = () => {
   const [nameErr, setNameErr] = useState<string | null>(null);
   const [emailErr, setEmailErr] = useState<string | null>(null);
   const [messageErr, setMessageErr] = useState<string | null>(null);
-  const [formState, setstate] = useState<FormState>({
+  const [formState, setstate] = useState<TFormData>({
     name: "",
     email: "",
     message: "",
@@ -67,13 +62,20 @@ export const ContactForm = () => {
     return isValid;
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    formIsValid() ? console.log(formState) : console.log("Form is invalid");
+
+    if (formIsValid()) {
+      sendContactDetails(formState).then((value) => {
+        alert(value.message);
+      });
+    } else {
+      console.log("Form is invalid!");
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-8" action="">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-8">
       <label htmlFor="input-name" className="block">
         <span className="text-gray-700">
           Full name<span className="text-red-500">*</span>
